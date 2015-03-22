@@ -99,7 +99,7 @@ class ajax extends AWS_CONTROLLER
 				H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('邀请码无效或与邀请邮箱不一致')));
 			}
 		}
-
+			
 		if (trim($_POST['user_name']) == '')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请输入用户名')));
@@ -108,20 +108,25 @@ class ajax extends AWS_CONTROLLER
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名已经存在')));
 		}
+		/*
+		//用户注册移至baihuawei.com，用户名为手机号，暂时关闭用户名验证
 		else if ($check_rs = $this->model('account')->check_username_char($_POST['user_name']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名包含无效字符')));
 		}
+		*/
 		else if ($this->model('account')->check_username_sensitive_words($_POST['user_name']) OR trim($_POST['user_name']) != $_POST['user_name'])
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('用户名中包含敏感词或系统保留字')));
 		}
 
+		//注册功能移至baihuawei.com，暂时关闭email验证
+		/*
 		if ($this->model('account')->check_email($_POST['email']))
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('E-Mail 已经被使用, 或格式不正确')));
 		}
-
+		*/
 		if (strlen($_POST['password']) < 6 OR strlen($_POST['password']) > 16)
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密码长度不符合规则')));
@@ -133,11 +138,14 @@ class ajax extends AWS_CONTROLLER
 		}
 
 		// 检查验证码
+		//关闭注册，暂时不验证此项
+		/*
 		if (!AWS_APP::captcha()->is_validate($_POST['seccode_verify']) AND get_setting('register_seccode') == 'Y')
 		{
 			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('请填写正确的验证码')));
 		}
-
+		*/
+		
 		if (get_setting('ucenter_enabled') == 'Y')
 		{
 			$result = $this->model('ucenter')->register($_POST['user_name'], $_POST['password'], $_POST['email']);
