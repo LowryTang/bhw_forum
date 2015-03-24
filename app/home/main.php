@@ -54,12 +54,13 @@ class main extends AWS_CONTROLLER
 		{
 			HTTP::redirect('/explore/');
 		}
-
+		//注册迁移至baihuawei.com后暂时关闭完善eamil、password功能
+		/*
 		if (! $this->user_info['email'])
 		{
 			HTTP::redirect('/account/complete_profile/');
 		}
-
+		*/
 		// 边栏可能感兴趣的人或话题
 		if (TPL::is_output('block/sidebar_recommend_users_topics.tpl.htm', 'home/index'))
 		{
