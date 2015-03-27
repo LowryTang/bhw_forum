@@ -36,6 +36,7 @@ class ajax extends AWS_CONTROLLER
 			'valid_email_active',
 			'request_find_password',
 			'find_password_modify',
+			'change_password',
 			'weixin_login_process'
 		);
 
@@ -271,6 +272,38 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(array(
 				'url' => $return_url
 			), 1, null));
+		}
+	}
+
+	public function change_password_action(){
+		$user_name = $_POST['user_name'];
+		$password = $_POST['password'];
+		if(trim($user_name) == '' || trim($password) == ''){
+			$ret = array('result' => 1,'message' => '用户名或密码不能为空');
+			$ret = json_encode($ret);
+			echo $ret;
+			return $ret;
+		}
+		$user_data = $this->model('account')->get_user_info_by_username($user_name);
+		if(empty($user_data)){
+			$ret = array('result' => 1,'message' => '用户名不存在');
+			$ret = json_encode($ret);
+			echo $ret;
+			return $ret;
+		}
+		$uid = $user_data['uid'];
+		$salt = $user_data['salt'];
+		$ret = $this->model('account')->update_user_password_ingore_oldpassword($password,$uid,$salt);
+		if($ret == true){
+			$ret = array('result' => 0,'message' => '修改密码成功');
+			$ret = json_encode($ret);
+			echo $ret;
+			return $ret;
+		}else{
+			$ret = array('result' => 1,'message' => '修改密码失败');
+			$ret = json_encode($ret);
+			echo $ret; 
+			return $ret;
 		}
 	}
 
