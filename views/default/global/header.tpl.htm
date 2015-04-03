@@ -72,6 +72,7 @@
 								<?php if (check_extension_package('project') && get_setting('project_enabled') == 'Y') { ?>
 								<li><a href="project/"<?php if ($_GET['app'] == 'project') { ?> class="active"<?php } ?>><i class="icon icon-activity"></i> <?php _e('活动'); ?></a></li>
 								<?php } ?>
+								<li><a class="" href="<?php echo get_setting('register_home_link'); ?>index.php">商城</a></li>
 							</ul>
 						</div>
 						<script type="text/javascript">
@@ -112,7 +113,6 @@
 					<a class="login btn btn-normal btn-primary" href="account/login/"><?php _e('登录'); ?></a>
 					<?php if (get_setting('register_type') == 'open') { ?><a class="register btn btn-normal btn-success" href="<?php echo get_setting('register_home_link'); ?>index.php?controller=simple&action=reg&callback=<?php echo get_setting('callback_home_url'); ?>"><?php _e('注册'); ?></a><?php } ?>
 				<?php } ?>
-				<a class="register btn btn-normal btn-success" href="<?php echo get_setting('register_home_link'); ?>index.php">商城</a>
 				<!-- end 登陆&注册栏 -->
 			</div>
 			<!-- end 用户栏 -->
