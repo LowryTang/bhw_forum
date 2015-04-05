@@ -351,8 +351,8 @@ class ajax extends AWS_CONTROLLER
 				$this->model('account')->update_user_last_login($user_info['uid']);
 				$this->model('account')->setcookie_logout();
 
-				$ret = $this->model('account')->setcookie_login($user_info['uid'], $_POST['user_name'], $_POST['password'], $user_info['salt'], $expire);
-
+				//$ret = $this->model('account')->setcookie_login($user_info['uid'], $_POST['user_name'], $_POST['password'], $user_info['salt'], $expire);
+				$ret = $this->model('account')->setcookie_login($user_info['uid'],$user_info['user_name'], $_POST['password'], $user_info['salt'], $expire);
 				if (get_setting('register_valid_type') == 'email' AND !$user_info['valid_email'])
 				{
 					AWS_APP::session()->valid_email = $user_info['email'];
