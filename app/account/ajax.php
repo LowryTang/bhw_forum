@@ -284,7 +284,7 @@ class ajax extends AWS_CONTROLLER
 			echo $ret;
 			return $ret;
 		}
-		$user_data = $this->model('account')->get_user_info_by_username($user_name);
+		$user_data = $this->model('account')->get_user_info_by_mobile($user_name);
 		if(empty($user_data)){
 			$ret = array('result' => 1,'message' => '用户名不存在');
 			$ret = json_encode($ret);
@@ -351,7 +351,7 @@ class ajax extends AWS_CONTROLLER
 				$this->model('account')->update_user_last_login($user_info['uid']);
 				$this->model('account')->setcookie_logout();
 
-				$this->model('account')->setcookie_login($user_info['uid'], $_POST['user_name'], $_POST['password'], $user_info['salt'], $expire);
+				$ret = $this->model('account')->setcookie_login($user_info['uid'], $_POST['user_name'], $_POST['password'], $user_info['salt'], $expire);
 
 				if (get_setting('register_valid_type') == 'email' AND !$user_info['valid_email'])
 				{

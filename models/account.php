@@ -38,7 +38,7 @@ class account_class extends AWS_MODEL
      */
     public function check_username($user_name)
     {
-        return $this->fetch_one('users', 'uid', "user_name = '" . $this->quote(trim($user_name)) . "' OR url_token = '" . $this->quote(trim($user_name)) . "'");
+        return $this->fetch_one('users', 'uid', "mobile = '" . $this->quote(trim($user_name)) . "' OR url_token = '" . $this->quote(trim($user_name)) . "'");
     }
 
     /**
@@ -129,7 +129,7 @@ class account_class extends AWS_MODEL
 
         if (! $user_info)
         {
-            if (! $user_info = $this->get_user_info_by_username($user_name))
+            if (! $user_info = $this->get_user_info_by_mobile($user_name))
             {
                 return false;
             }
@@ -223,6 +223,11 @@ class account_class extends AWS_MODEL
         }
     }
 
+	public function get_user_info_by_mobile($mobile, $attrb = false, $cache_result = true){
+		if($uid = $this->fetch_one('users', 'uid', "mobile = '" . $this->quote($mobile) . "'")){
+			return $this->get_user_info_by_uid($uid, $attrb, $cache_result);
+		}
+	}
     /**
      * 通过用户邮箱获取用户信息
      *
@@ -525,12 +530,12 @@ class account_class extends AWS_MODEL
         $salt = fetch_salt(4);
 
         if ($uid = $this->insert('users', array(
-            'user_name' => htmlspecialchars($user_name),
+            'user_name' => htmlspecialchars(md5($user_name)),
             'password' => compile_password($password, $salt),
             'salt' => $salt,
             'email' => htmlspecialchars($email),
             'sex' => intval($sex),
-            'mobile' => htmlspecialchars($mobile),
+            'mobile' => htmlspecialchars($user_name),
             'reg_time' => time(),
             'reg_ip' => ip2long(fetch_ip()),
             'email_settings' => serialize(get_setting('new_user_email_setting'))
