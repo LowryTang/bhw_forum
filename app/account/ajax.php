@@ -979,7 +979,8 @@ class ajax extends AWS_CONTROLLER
 
 	public function profile_setting_action()
 	{
-		if (!$this->user_info['user_name'] OR $this->user_info['user_name'] == $this->user_info['email'] AND $_POST['user_name'])
+		//if (!$this->user_info['user_name'] OR $this->user_info['user_name'] == $this->user_info['email'] AND $_POST['user_name'])
+		if($_POST['user_name'] != '' &&  $this->user_info['user_name'] != $_POST['user_name'])
 		{
 			$update_data['user_name'] = htmlspecialchars(trim($_POST['user_name']));
 
@@ -1019,7 +1020,8 @@ class ajax extends AWS_CONTROLLER
 			H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('已经存在相同的姓名, 请重新填写')));
 		}
 
-		if (! H::valid_email($this->user_info['email']))
+		//if($_POST['email'] != '' && $_POST['email'] != $this->user_info['email'])
+		if (0 && ! H::valid_email($this->user_info['email']))
 		{
 			if (! H::valid_email($_POST['email']))
 			{
